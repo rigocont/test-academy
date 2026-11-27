@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { randomUUID } from 'node:crypto';
 import { atenderPedidos } from './pedidos.mjs';
 
 const PUERTO = Number(process.env.PUERTO ?? 3000);
@@ -125,6 +126,13 @@ async function archivo(res, ruta) {
 
 createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', `http://localhost:${PUERTO}`);
+  // Observabilidad: cada respuesta lleva un id de correlación. Si el cliente manda
+  // X-Request-Id se reutiliza; si no, se genera uno. También queda en el log del servidor.
+  const idPeticion = String(req.headers['x-request-id'] ?? randomUUID());
+  res.setHeader('X-Request-Id', idPeticion);
+  if (url.pathname.startsWith('/api/') && process.env.LOG_PETICIONES) {
+    console.log(`[${idPeticion}] ${req.method} ${url.pathname}`);
+  }
   try {
     if (url.pathname === '/salud') return json(res, 200, { estado: 'ok' });
     if (url.pathname.startsWith('/api/')) return await api(req, res, url);

@@ -10,6 +10,7 @@
     "test:nivel0": "playwright test --project=nivel-0",
     "test:nivel1": "playwright test --project=nivel-1",
     "test:nivel2": "playwright test --project=nivel-2",
+    "test:nivel3": "playwright test --project=nivel-3",
     "reporte": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "verificar-soluciones": "node scripts/verificar-soluciones.mjs"
@@ -18,6 +19,7 @@
     "@playwright/test": "1.63.0",
     "@types/node": "^22.10.0",
     "tsx": "^4.23.15",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "zod": "^3.25.76"
   }
 }
