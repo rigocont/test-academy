@@ -35,18 +35,19 @@ npm run app             # abre la tienda de práctica en http://localhost:3000
 | `docs/` | Matriz de competencias, examen de ubicación y temario por nivel |
 | `niveles/nivel-0/` | Guías de clase y ejercicios de TypeScript con pruebas que validan |
 | `niveles/nivel-1/` | Guías de clase y labs de Playwright (UI y API) |
-| `app/` | Tienda de práctica: login, productos, carrito, checkout y API REST, sin dependencias |
+| `niveles/nivel-2/` | Framework propio (Page Objects, fixtures, clientes de API) y sus labs |
+| `app/` | Tienda de práctica: login, productos, carrito, checkout, pedidos, herramientas y API REST con token, sin dependencias |
 | `scripts/` | `verificar-soluciones.mjs`: comprueba que todas las soluciones pasan |
 
 | Comando | Qué hace |
 |---|---|
-| `npm run test:nivel0` / `npm run test:nivel1` | Corre los ejercicios o labs de un nivel |
+| `npm run test:nivel0`, `test:nivel1`, `test:nivel2` | Corre los ejercicios o labs de un nivel |
 | `npx playwright test m1.3 --ui` | Corre un módulo en modo UI |
 | `npm run app` | Levanta la tienda de práctica |
 | `npm run reporte` | Abre el último reporte HTML |
 | `npm run verificar-soluciones` | Para instructores: corre las pruebas con las soluciones de referencia |
 
-> Las soluciones (`solucion.ts`, `solucion.spec.ts`) están en el mismo repo para que los
+> Las soluciones (`solucion.ts`, `solucion.spec.ts` y `*.solucion.ts`) están en el mismo repo para que los
 > instructores las mantengan junto al material. Para un grupo real conviene publicar a los
 > alumnos una copia sin esas carpetas o mover las soluciones a un repo privado.
 
@@ -57,10 +58,11 @@ npm run app             # abre la tienda de práctica en http://localhost:3000
 - [Temario por nivel](docs/temario/README.md)
 - [Material del Nivel 0](niveles/nivel-0/README.md)
 - [Material del Nivel 1](niveles/nivel-1/README.md)
+- [Material del Nivel 2](niveles/nivel-2/README.md)
 
 ## Estado
 
 1. ✅ Matriz de competencias y examen de ubicación
 2. ✅ Temario detallado por nivel
 3. ✅ Material piloto de Nivel 0 y Nivel 1
-4. ⏳ Material de Niveles 2 a 4
+4. 🚧 Material de Niveles 2 a 4 (Nivel 2 listo)

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Herramientas</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Herramientas</h1>
+  <p>Casos difíciles para practicar en el Nivel 2: diálogos, pestañas nuevas, iframes y archivos.</p>
+
+  <section class="bloque" aria-labelledby="t-dialogos">
+    <h2 id="t-dialogos">Diálogos del navegador</h2>
+    <button type="button" id="aviso">Mostrar aviso</button>
+    <button type="button" id="confirmar">Vaciar carrito</button>
+    <button type="button" id="renombrar">Renombrar lista</button>
+    <p id="resultado-dialogo" role="status"></p>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-pestanas">
+    <h2 id="t-pestanas">Pestañas nuevas</h2>
+    <a href="/manual.html" target="_blank" rel="noopener">Abrir manual de usuario</a>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-iframe">
+    <h2 id="t-iframe">Widget de soporte (iframe)</h2>
+    <iframe src="/widget-soporte.html" title="Soporte"></iframe>
+  </section>
+
+  <section class="bloque" aria-labelledby="t-archivos">
+    <h2 id="t-archivos">Archivos</h2>
+    <label>Subir archivo de productos <input type="file" id="archivo" accept=".csv"></label>
+    <p id="resultado-archivo" role="status"></p>
+    <button type="button" id="descargar">Descargar inventario</button>
+  </section>
+</main>
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  encabezado();
+  const resultado = document.getElementById('resultado-dialogo');
+  document.getElementById('aviso').addEventListener('click', () => {
+    alert('Este es un aviso de prueba');
+    resultado.textContent = 'Aviso cerrado';
+  });
+  document.getElementById('confirmar').addEventListener('click', () => {
+    if (confirm('¿Seguro que quieres vaciar el carrito?')) {
+      Tienda.guardarCarrito([]);
+      resultado.textContent = 'Carrito vaciado';
+    } else {
+      resultado.textContent = 'Se conservó el carrito';
+    }
+  });
+  document.getElementById('renombrar').addEventListener('click', () => {
+    const nombre = prompt('Nuevo nombre de la lista', 'Mi lista');
+    resultado.textContent = nombre ? `Lista renombrada a "${nombre}"` : 'Sin cambios';
+  });
+
+  document.getElementById('archivo').addEventListener('change', async (e) => {
+    const archivo = e.target.files[0];
+    const texto = await archivo.text();
+    const filas = texto.trim().split('\n').slice(1).filter(Boolean);
+    document.getElementById('resultado-archivo').textContent = `${archivo.name}: ${filas.length} productos cargados`;
+  });
+
+  document.getElementById('descargar').addEventListener('click', async () => {
+    const productos = await (await fetch('/api/productos?retraso=0')).json();
+    const csv = 'id,nombre,precio,categoria\n' + productos.map((p) => `${p.id},${p.nombre},${p.precio},${p.categoria}`).join('\n') + '\n';
+    const enlace = document.createElement('a');
+    enlace.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    enlace.download = 'inventario.csv';
+    enlace.click();
+  });
+</script>
+</body>
+</html>

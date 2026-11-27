@@ -1,6 +1,7 @@
 // Verifica que las soluciones de referencia pasan todas las pruebas.
 // Copia el repo a una carpeta temporal del sistema, pone cada solucion.ts en lugar de su ejercicio.ts
-// y cada solucion.spec.ts en lugar de su lab.spec.ts, y corre Playwright ahí.
+// cada solucion.spec.ts en lugar de su lab.spec.ts y cada X.solucion.ts en lugar de X.ts,
+// y corre Playwright ahí.
 // Uso: npm run verificar-soluciones  (acepta argumentos extra de Playwright)
 
 import { cpSync, readdirSync, statSync, symlinkSync, copyFileSync, mkdtempSync } from 'node:fs';
@@ -30,6 +31,9 @@ function recorrer(dir) {
       reemplazos++;
     } else if (nombre === 'solucion.spec.ts') {
       copyFileSync(ruta, join(dir, 'lab.spec.ts'));
+      reemplazos++;
+    } else if (nombre.endsWith('.solucion.ts')) {
+      copyFileSync(ruta, join(dir, nombre.replace(/\.solucion\.ts$/, '.ts')));
       reemplazos++;
     }
   }

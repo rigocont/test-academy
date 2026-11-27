@@ -9,6 +9,7 @@
     "test": "playwright test",
     "test:nivel0": "playwright test --project=nivel-0",
     "test:nivel1": "playwright test --project=nivel-1",
+    "test:nivel2": "playwright test --project=nivel-2",
     "reporte": "playwright show-report",
     "typecheck": "tsc --noEmit",
     "verificar-soluciones": "node scripts/verificar-soluciones.mjs"

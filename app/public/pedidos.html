@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Pedidos</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Pedidos</h1>
+  <div class="paginacion">
+    <label>Buscar cliente <input type="search" id="cliente"></label>
+    <label>Estado
+      <select id="estado">
+        <option value="">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="pagado">Pagado</option>
+        <option value="enviado">Enviado</option>
+        <option value="entregado">Entregado</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+    </label>
+  </div>
+  <table aria-label="Pedidos">
+    <thead><tr><th>Pedido</th><th>Cliente</th><th>Estado</th><th>Total</th><th>Acciones</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p id="sin-pedidos" hidden>No hay pedidos con esos filtros</p>
+  <nav class="paginacion" aria-label="Paginación">
+    <button type="button" class="secundario" id="anterior">Anterior</button>
+    <span id="pagina-actual"></span>
+    <button type="button" class="secundario" id="siguiente">Siguiente</button>
+  </nav>
+</main>
+
+<dialog id="detalle" aria-labelledby="detalle-titulo">
+  <h2 id="detalle-titulo"></h2>
+  <dl>
+    <dt>Cliente</dt><dd data-testid="detalle-cliente"></dd>
+    <dt>Código postal</dt><dd data-testid="detalle-cp"></dd>
+    <dt>Estado</dt><dd data-testid="detalle-estado"></dd>
+    <dt>Total</dt><dd data-testid="detalle-total"></dd>
+    <dt>Notas</dt><dd data-testid="detalle-notas"></dd>
+  </dl>
+  <button type="button" id="pagar">Marcar como pagado</button>
+  <button type="button" class="secundario" id="cerrar">Cerrar</button>
+  <p role="alert" class="mensaje-error" id="error-detalle"></p>
+</dialog>
+
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  if (!Tienda.token()) location.href = '/';
+  encabezado();
+  const POR_PAGINA = 5;
+  let pagina = 1;
+  let total = 0;
+  let pedidoAbierto = null;
+
+  const api = (ruta, opciones = {}) =>
+    fetch(ruta, {
+      ...opciones,
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + Tienda.token(), ...(opciones.headers ?? {}) },
+    });
+
+  async function cargar() {
+    const params = new URLSearchParams({ pagina, porPagina: POR_PAGINA });
+    const estado = document.getElementById('estado').value;
+    const cliente = document.getElementById('cliente').value;
+    if (estado) params.set('estado', estado);
+    if (cliente) params.set('cliente', cliente);
+    const respuesta = await api('/api/pedidos?' + params);
+    if (respuesta.status === 401) { Tienda.cerrarSesion(); return; }
+    const datos = await respuesta.json();
+    total = datos.total;
+    const cuerpo = document.querySelector('tbody');
+    cuerpo.innerHTML = '';
+    for (const p of datos.datos) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>#${p.id}</td><td>${p.cliente}</td><td><span class="estado">${p.estado}</span></td>
+        <td>${Tienda.precio(p.total)}</td><td><button type="button" class="secundario">Ver detalle</button></td>`;
+      tr.querySelector('button').addEventListener('click', () => abrir(p.id));
+      cuerpo.append(tr);
+    }
+    const paginas = Math.max(1, Math.ceil(total / POR_PAGINA));
+    document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${paginas}`;
+    document.getElementById('anterior').disabled = pagina <= 1;
+    document.getElementById('siguiente').disabled = pagina >= paginas;
+    document.getElementById('sin-pedidos').hidden = datos.datos.length > 0;
+  }
+
+  async function abrir(id) {
+    pedidoAbierto = await (await api('/api/pedidos/' + id)).json();
+    document.getElementById('detalle-titulo').textContent = 'Pedido #' + pedidoAbierto.id;
+    document.querySelector('[data-testid="detalle-cliente"]').textContent = pedidoAbierto.cliente;
+    document.querySelector('[data-testid="detalle-cp"]').textContent = pedidoAbierto.cp;
+    document.querySelector('[data-testid="detalle-estado"]').textContent = pedidoAbierto.estado;
+    document.querySelector('[data-testid="detalle-total"]').textContent = Tienda.precio(pedidoAbierto.total);
+    document.querySelector('[data-testid="detalle-notas"]').textContent = pedidoAbierto.notas || 'Sin notas';
+    document.getElementById('error-detalle').textContent = '';
+    document.getElementById('detalle').showModal();
+  }
+
+  document.getElementById('pagar').addEventListener('click', async () => {
+    const r = await api('/api/pedidos/' + pedidoAbierto.id, { method: 'PATCH', body: JSON.stringify({ estado: 'pagado' }) });
+    const datos = await r.json();
+    if (!r.ok) { document.getElementById('error-detalle').textContent = datos.error; return; }
+    document.querySelector('[data-testid="detalle-estado"]').textContent = datos.estado;
+    cargar();
+  });
+  document.getElementById('cerrar').addEventListener('click', () => document.getElementById('detalle').close());
+  document.getElementById('anterior').addEventListener('click', () => { pagina--; cargar(); });
+  document.getElementById('siguiente').addEventListener('click', () => { pagina++; cargar(); });
+  document.getElementById('estado').addEventListener('change', () => { pagina = 1; cargar(); });
+  document.getElementById('cliente').addEventListener('input', () => { pagina = 1; cargar(); });
+  cargar();
+</script>
+</body>
+</html>

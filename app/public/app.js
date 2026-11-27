@@ -1,6 +1,7 @@
 // Funciones compartidas por las páginas de la tienda.
 const Tienda = {
   usuario() { return localStorage.getItem('usuario'); },
+  token() { return localStorage.getItem('token'); },
   exigirSesion() { if (!this.usuario()) location.href = '/'; },
   carrito() { return JSON.parse(localStorage.getItem('carrito') ?? '[]'); },
   guardarCarrito(items) { localStorage.setItem('carrito', JSON.stringify(items)); this.pintarContador(); },
@@ -27,7 +28,9 @@ function encabezado() {
     <strong>Tienda QA</strong>
     <nav aria-label="Principal">
       <a href="/productos.html">Productos</a>
+      <a href="/pedidos.html">Pedidos</a>
       <a href="/reportes.html">Reportes</a>
+      <a href="/herramientas.html">Herramientas</a>
       <a href="/carrito.html">Carrito <span class="contador" data-testid="contador-carrito">0</span></a>
       <span data-testid="usuario-actual">${Tienda.usuario() ?? ''}</span>
       <button class="secundario" type="button" id="cerrar-sesion">Cerrar sesión</button>
