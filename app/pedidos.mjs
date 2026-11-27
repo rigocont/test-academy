@@ -7,6 +7,8 @@
 //   PATCH  /api/pedidos/:id           { estado } → 200 | 400 | 409 (transición no permitida)
 //   PUT    /api/pedidos/:id/notas     { notas } → 200 (idempotente)
 //   DELETE /api/pedidos/:id           → 204 | 404 | 409 (solo pendiente o cancelado)
+//   POST   /api/reportes              { estado? } → 202 { id, estado: 'procesando' }   (Nivel 3: API asíncrona)
+//   GET    /api/reportes/:id          → { id, estado: 'procesando' } y, después de ~1.5 s, { id, estado: 'listo', resultado }
 //
 // Todas las rutas de pedidos piden el header  Authorization: Bearer <token>.
 
@@ -25,6 +27,8 @@ export const TRANSICIONES = {
 };
 
 const tokens = new Map(); // token → usuario
+const reportes = new Map(); // id → { listoEn, filtro }
+let siguienteReporte = 1;
 let pedidos = [];
 let siguienteId = 1;
 
@@ -92,11 +96,46 @@ export async function atenderPedidos(req, res, url, { json, leerCuerpo, producto
     return true;
   }
 
-  if (recurso !== 'pedidos') return false;
+  if (recurso !== 'pedidos' && recurso !== 'reportes') return false;
   if (pedidos.length === 0) semilla(productos);
 
   if (!usuarioDelToken(req)) {
     json(res, 401, { error: 'Token inválido o ausente' });
+    return true;
+  }
+
+  if (recurso === 'reportes') {
+    const idReporte = partes[2] ? Number(partes[2]) : undefined;
+    if (req.method === 'POST' && idReporte === undefined) {
+      const datos = (await leerCuerpo(req)) ?? {};
+      if (datos.estado !== undefined && !ESTADOS.includes(datos.estado)) {
+        json(res, 400, { error: `Estado inválido. Usa uno de: ${ESTADOS.join(', ')}` });
+        return true;
+      }
+      const id = siguienteReporte++;
+      reportes.set(id, { listoEn: Date.now() + 1500, filtro: datos.estado });
+      json(res, 202, { id, estado: 'procesando' });
+      return true;
+    }
+    if (req.method === 'GET' && idReporte !== undefined) {
+      const reporte = reportes.get(idReporte);
+      if (!reporte) {
+        json(res, 404, { error: 'Reporte no encontrado' });
+        return true;
+      }
+      if (Date.now() < reporte.listoEn) {
+        json(res, 200, { id: idReporte, estado: 'procesando' });
+        return true;
+      }
+      const incluidos = pedidos.filter((p) => !reporte.filtro || p.estado === reporte.filtro);
+      json(res, 200, {
+        id: idReporte,
+        estado: 'listo',
+        resultado: { pedidos: incluidos.length, total: incluidos.reduce((s, p) => s + p.total, 0) },
+      });
+      return true;
+    }
+    json(res, 405, { error: 'Método no permitido' });
     return true;
   }
 

@@ -1,0 +1,84 @@
+# M3.4 Plantilla de pipeline para un framework de Playwright.
+# Cópiala a .github/workflows/pruebas-e2e.yml en TU repositorio y ajusta lo marcado con TODO.
+# Este archivo no corre en este repo porque no está dentro de .github/workflows/.
+
+name: Pruebas E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: Ambiente contra el que se corre
+        type: choice
+        options: [qa, staging]
+        default: qa
+
+# Si subes otro commit al mismo PR, cancela la corrida anterior.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false # que un shard que falla no cancele a los demás
+      matrix:
+        shard: [1, 2, 3, 4]
+    env:
+      AMBIENTE: ${{ inputs.ambiente || 'qa' }}
+      API_TOKEN: ${{ secrets.API_TOKEN }} # TODO: crea el secret en Settings > Secrets and variables > Actions
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Instalar navegadores
+        run: npx playwright install --with-deps chromium
+      - name: Correr shard ${{ matrix.shard }} de 4
+        # blob: formato intermedio que después se une en un solo reporte HTML.
+        run: npx playwright test --shard=${{ matrix.shard }}/4 --reporter=blob
+      - name: Subir reporte parcial
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-${{ matrix.shard }}
+          path: blob-report
+          retention-days: 1
+
+  reporte:
+    # Corre aunque algún shard falle, para que siempre haya reporte.
+    if: ${{ !cancelled() }}
+    needs: pruebas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          path: todos-los-blobs
+          pattern: blob-*
+          merge-multiple: true
+      - name: Unir reportes
+        run: npx playwright merge-reports --reporter=html,json ./todos-los-blobs
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: resultados.json
+      - name: Publicar reporte HTML (incluye traces de las fallas)
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-playwright
+          path: playwright-report
+          retention-days: 14
+      - name: Quality gate
+        # TODO: ajusta la regla. Aquí: falla si hay más de 2 % de pruebas inestables.
+        run: node scripts/quality-gate.mjs resultados.json --max-flaky=2

@@ -29,6 +29,18 @@ export default defineConfig({
       testDir: './niveles/nivel-2',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      // Inicia sesión una vez y guarda el estado en playwright/.auth/ (ver M3.2).
+      name: 'nivel-3-setup',
+      testDir: './niveles/nivel-3',
+      testMatch: '**/*.setup.ts',
+    },
+    {
+      name: 'nivel-3',
+      testDir: './niveles/nivel-3',
+      dependencies: ['nivel-3-setup'],
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: {
     command: 'node app/server.mjs',

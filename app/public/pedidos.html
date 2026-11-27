@@ -49,6 +49,8 @@
   if (!Tienda.token()) location.href = '/';
   encabezado();
   const POR_PAGINA = 5;
+  const escapar = (texto) =>
+    String(texto).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   let pagina = 1;
   let total = 0;
   let pedidoAbierto = null;
@@ -73,7 +75,8 @@
     cuerpo.innerHTML = '';
     for (const p of datos.datos) {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>#${p.id}</td><td>${p.cliente}</td><td><span class="estado">${p.estado}</span></td>
+      // Los datos vienen del usuario: se escapan para evitar XSS (ver M3.7).
+      tr.innerHTML = `<td>#${p.id}</td><td>${escapar(p.cliente)}</td><td><span class="estado">${p.estado}</span></td>
         <td>${Tienda.precio(p.total)}</td><td><button type="button" class="secundario">Ver detalle</button></td>`;
       tr.querySelector('button').addEventListener('click', () => abrir(p.id));
       cuerpo.append(tr);

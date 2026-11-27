@@ -45,11 +45,22 @@
   }
   document.getElementById('buscar').addEventListener('input', pintar);
   document.getElementById('categoria').addEventListener('change', pintar);
-  fetch('/api/productos').then((r) => r.json()).then((datos) => {
-    productos = datos;
-    document.getElementById('cargando').remove();
-    pintar();
-  });
+  fetch('/api/productos')
+    .then((r) => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then((datos) => {
+      productos = datos;
+      document.getElementById('cargando').remove();
+      pintar();
+    })
+    .catch(() => {
+      const cargando = document.getElementById('cargando');
+      cargando.textContent = 'No pudimos cargar los productos. Intenta más tarde.';
+      cargando.setAttribute('role', 'alert');
+      cargando.id = 'error-carga';
+    });
 </script>
 </body>
 </html>
