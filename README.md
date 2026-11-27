@@ -38,6 +38,7 @@ npm run app             # abre la tienda de práctica en http://localhost:3000
 | `niveles/nivel-2/` | Framework propio (Page Objects, fixtures, clientes de API) y sus labs |
 | `niveles/nivel-3/` | Arquitectura, ambientes, CI/CD, mocking, esquemas, seguridad, estrategia y métricas |
 | `niveles/nivel-4/` | Talleres de liderazgo, mentoría y plantillas de entregables |
+| `material-ponente/` | PDF de exposición por clase (diapositivas y notas para el ponente) y presentación ejecutiva |
 | `app/` | Tienda de práctica: login, productos, carrito, checkout, pedidos, herramientas y API REST con token, sin dependencias |
 | `scripts/` | `verificar-soluciones.mjs`: comprueba que todas las soluciones pasan |
 
@@ -47,6 +48,7 @@ npm run app             # abre la tienda de práctica en http://localhost:3000
 | `npx playwright test m1.3 --ui` | Corre un módulo en modo UI |
 | `npm run app` | Levanta la tienda de práctica |
 | `npm run reporte` | Abre el último reporte HTML |
+| `npm run pdfs` | Regenera los PDF de exposición y la presentación ejecutiva |
 | `npm run verificar-soluciones` | Para instructores: corre las pruebas con las soluciones de referencia |
 
 > Las soluciones (`solucion.ts`, `solucion.spec.ts` y `*.solucion.ts`) están en el mismo repo para que los
@@ -63,6 +65,8 @@ npm run app             # abre la tienda de práctica en http://localhost:3000
 - [Material del Nivel 2](niveles/nivel-2/README.md)
 - [Material del Nivel 3](niveles/nivel-3/README.md)
 - [Programa del Nivel 4](niveles/nivel-4/README.md)
+- [Material de exposición en PDF](material-ponente/README.md)
+- [Presentación ejecutiva (PDF)](material-ponente/academia-presentacion-ejecutiva.pdf)
 
 ## Estado
 

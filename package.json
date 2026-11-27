@@ -13,11 +13,13 @@
     "test:nivel3": "playwright test --project=nivel-3",
     "reporte": "playwright show-report",
     "typecheck": "tsc --noEmit",
-    "verificar-soluciones": "node scripts/verificar-soluciones.mjs"
+    "verificar-soluciones": "node scripts/verificar-soluciones.mjs",
+    "pdfs": "node scripts/generar-pdfs.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
     "@types/node": "^22.10.0",
+    "marked": "^15.0.12",
     "tsx": "^4.23.15",
     "typescript": "^5.7.0",
     "zod": "^3.25.76"
