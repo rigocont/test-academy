@@ -31,16 +31,14 @@ El framework estima las horas **con práctica en proyecto real**. Las horas guia
 son las que la academia da con sesiones y labs. La diferencia se cubre aplicando lo
 aprendido en el trabajo diario, sobre todo en los Niveles 2 y 3.
 
-## Aplicaciones de práctica
+## Aplicación de práctica
 
-Mientras la academia no tenga una aplicación propia, los labs usan sitios públicos
-pensados para practicar:
+Los labs de los Niveles 0 y 1 usan la **tienda de práctica del repo** (`app/`): login, productos,
+carrito, checkout, una página lenta a propósito y una API REST. Así los labs no dependen de
+sitios externos y los datos están bajo control. Playwright la levanta solo al correr las pruebas.
 
-- **UI:** `demo.playwright.dev/todomvc`, `saucedemo.com`, `the-internet.herokuapp.com`
-- **API:** `jsonplaceholder.typicode.com`, `restful-booker.herokuapp.com`
-
-Más adelante conviene tener una aplicación propia en el repo para controlar los datos y
-evitar que un cambio externo rompa los labs.
+Para los Niveles 2 en adelante se puede ampliar la tienda o sumar sitios públicos de práctica
+como `the-internet.herokuapp.com` (diálogos, iframes, archivos) y `restful-booker.herokuapp.com` (API con auth).
 
 ## Decisiones aplicadas de la matriz (sección 6)
 

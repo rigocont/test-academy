@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Productos</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Productos</h1>
+  <label>Buscar producto <input type="search" id="buscar"></label>
+  <label>Categoría
+    <select id="categoria">
+      <option value="">Todas</option>
+      <option value="accesorios">Accesorios</option>
+      <option value="electronica">Electrónica</option>
+      <option value="hogar">Hogar</option>
+      <option value="papeleria">Papelería</option>
+    </select>
+  </label>
+  <p id="cargando">Cargando productos...</p>
+  <ul class="productos" aria-label="Lista de productos"></ul>
+  <p id="sin-resultados" hidden>No hay productos que coincidan</p>
+</main>
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  encabezado();
+  const lista = document.querySelector('.productos');
+  let productos = [];
+  function pintar() {
+    const texto = document.getElementById('buscar').value.toLowerCase();
+    const cat = document.getElementById('categoria').value;
+    const visibles = productos.filter((p) => p.nombre.toLowerCase().includes(texto) && (!cat || p.categoria === cat));
+    lista.innerHTML = '';
+    for (const p of visibles) {
+      const li = document.createElement('li');
+      li.innerHTML = `<article data-testid="producto-${p.id}">
+        <h2>${p.nombre}</h2>
+        <p class="precio">${Tienda.precio(p.precio)}</p>
+        <button type="button">Agregar al carrito</button></article>`;
+      li.querySelector('button').addEventListener('click', (e) => {
+        Tienda.agregar(p);
+        e.target.textContent = 'Agregado';
+      });
+      lista.append(li);
+    }
+    document.getElementById('sin-resultados').hidden = visibles.length > 0;
+  }
+  document.getElementById('buscar').addEventListener('input', pintar);
+  document.getElementById('categoria').addEventListener('change', pintar);
+  fetch('/api/productos').then((r) => r.json()).then((datos) => {
+    productos = datos;
+    document.getElementById('cargando').remove();
+    pintar();
+  });
+</script>
+</body>
+</html>

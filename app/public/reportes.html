@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Reportes</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Reportes</h1>
+  <p>Esta página es lenta a propósito, para practicar esperas.</p>
+  <button type="button" id="generar">Generar reporte de ventas</button>
+  <p id="estado" role="status"></p>
+  <button type="button" id="borrar" class="secundario">Borrar historial</button>
+  <p id="resultado-borrar"></p>
+</main>
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  encabezado();
+  document.getElementById('generar').addEventListener('click', (e) => {
+    const estado = document.getElementById('estado');
+    e.target.disabled = true;
+    estado.textContent = 'Generando...';
+    // Entre 1 y 3 segundos: una espera fija con waitForTimeout falla a veces.
+    setTimeout(() => { estado.textContent = 'Reporte listo'; e.target.disabled = false; }, 1000 + Math.random() * 2000);
+  });
+  document.getElementById('borrar').addEventListener('click', () => {
+    const ok = confirm('¿Seguro que quieres borrar el historial?');
+    document.getElementById('resultado-borrar').textContent = ok ? 'Historial borrado' : 'Operación cancelada';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Iniciar sesión</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Iniciar sesión</h1>
+  <form id="login" novalidate>
+    <label>Usuario <input name="usuario" autocomplete="username"></label>
+    <label>Contraseña <input name="contrasena" type="password" autocomplete="current-password"></label>
+    <button type="submit">Entrar</button>
+    <p role="alert" class="mensaje-error" id="error"></p>
+  </form>
+  <p>Usuarios de práctica: <code>estandar</code>, <code>bloqueado</code> y <code>lento</code>. Contraseña: <code>secreto123</code>.</p>
+</main>
+<script>
+  const USUARIOS = { estandar: 'activo', bloqueado: 'bloqueado', lento: 'lento' };
+  document.getElementById('login').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const usuario = e.target.usuario.value.trim();
+    const contrasena = e.target.contrasena.value;
+    const error = document.getElementById('error');
+    if (!usuario || !contrasena) { error.textContent = 'Usuario y contraseña son obligatorios'; return; }
+    if (!(usuario in USUARIOS) || contrasena !== 'secreto123') { error.textContent = 'Usuario o contraseña incorrectos'; return; }
+    if (USUARIOS[usuario] === 'bloqueado') { error.textContent = 'Este usuario está bloqueado'; return; }
+    localStorage.setItem('usuario', usuario);
+    const ir = () => (location.href = '/productos.html');
+    USUARIOS[usuario] === 'lento' ? setTimeout(ir, 1500) : ir();
+  });
+</script>
+</body>
+</html>
