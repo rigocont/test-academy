@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Soporte</title><link rel="stylesheet" href="/estilos.css"></head>
+<body style="padding: 12px">
+  <form id="soporte" novalidate>
+    <label>Tu consulta <input name="consulta"></label>
+    <button type="submit">Enviar consulta</button>
+  </form>
+  <p id="respuesta" role="status"></p>
+<script>
+  document.getElementById('soporte').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const consulta = e.target.consulta.value.trim();
+    document.getElementById('respuesta').textContent = consulta
+      ? `Recibimos tu consulta: "${consulta}". Folio S-${consulta.length}${consulta.length * 7}`
+      : 'Escribe tu consulta antes de enviar';
+  });
+</script>
+</body>
+</html>

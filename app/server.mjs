@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { atenderPedidos } from './pedidos.mjs';
 
 const PUERTO = Number(process.env.PUERTO ?? 3000);
 const CARPETA_PUBLICA = join(fileURLToPath(new URL('.', import.meta.url)), 'public');
@@ -32,6 +33,7 @@ const TIPOS = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.svg': 'image/svg+xml',
+  '.csv': 'text/csv; charset=utf-8',
 };
 
 const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -95,6 +97,8 @@ async function api(req, res, url) {
       return usuarios.length < antes ? json(res, 204) : json(res, 404, { error: 'Usuario no encontrado' });
     }
   }
+
+  if (await atenderPedidos(req, res, url, { json, leerCuerpo, productos: PRODUCTOS })) return;
 
   if (recurso === 'reiniciar' && req.method === 'POST') {
     usuarios = structuredClone(USUARIOS_INICIALES);
