@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Academia de Automatización de Pruebas · Presentación ejecutiva</title>
+<!-- Fuente de academia-presentacion-ejecutiva.pdf. Se genera con: npm run pdfs -- ejecutivo -->
+<style>
+@page { size: 1280px 720px; margin: 0; }
+:root {
+  --tinta: #0f172a; --suave: #475569; --linea: #e2e8f0; --fondo: #f8fafc;
+  --azul: #1d4ed8; --verde: #0f766e; --morado: #7c3aed; --naranja: #c2410c; --rojo: #be123c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #fff; }
+body { font-family: Inter, 'Liberation Sans', Arial, sans-serif; color: var(--tinta); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.slide { width: 1280px; height: 720px; position: relative; overflow: hidden; break-after: page; padding: 56px 72px; display: flex; flex-direction: column; }
+.slide::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: linear-gradient(90deg, var(--verde), var(--azul), var(--morado), var(--naranja), var(--rojo)); }
+.etiqueta { font-size: 15px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--azul); margin-bottom: 6px; }
+h2 { font-size: 40px; line-height: 1.15; margin: 0 0 26px; }
+p { margin: 0 0 14px; }
+.grande { font-size: 24px; line-height: 1.45; color: var(--suave); max-width: 1050px; }
+.pie { position: absolute; left: 72px; right: 72px; bottom: 22px; display: flex; justify-content: space-between; font-size: 14px; color: var(--suave); }
+.portada { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%); color: #fff; justify-content: center; }
+.portada::before { height: 12px; }
+.portada h1 { font-family: 'Inter Display', Inter, sans-serif; font-size: 76px; line-height: 1.04; margin: 0 0 22px; max-width: 1000px; }
+.portada .sub { font-size: 26px; opacity: .85; max-width: 900px; }
+.portada .quien { position: absolute; bottom: 48px; left: 72px; font-size: 18px; opacity: .7; }
+.cols { display: grid; gap: 22px; }
+.c2 { grid-template-columns: 1fr 1fr; } .c3 { grid-template-columns: repeat(3, 1fr); } .c4 { grid-template-columns: repeat(4, 1fr); } .c5 { grid-template-columns: repeat(5, 1fr); }
+.tarjeta { background: var(--fondo); border: 1px solid var(--linea); border-radius: 16px; padding: 24px 24px; }
+.tarjeta h3 { margin: 0 0 10px; font-size: 23px; }
+.tarjeta p, .tarjeta li { font-size: 19px; line-height: 1.45; color: var(--suave); }
+.tarjeta ul { margin: 0; padding-left: 1.1em; }
+.cifra { font-size: 50px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
+.nivel { border-top: 8px solid var(--c); }
+.nivel .num { font-size: 15px; font-weight: 700; color: var(--c); text-transform: uppercase; letter-spacing: .05em; }
+.nivel h3 { font-size: 24px; margin: 4px 0 10px; }
+.nivel .dato { font-size: 18px; color: var(--suave); margin: 4px 0; }
+.nivel .dato b { color: var(--tinta); }
+.nivel .rol { margin-top: 12px; font-weight: 700; color: var(--c); font-size: 17px; }
+table { border-collapse: collapse; width: 100%; font-size: 20px; }
+th { text-align: left; background: #eef2ff; padding: 12px 14px; font-size: 17px; }
+td { padding: 13px 14px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+td b { color: var(--tinta); }
+.nota { font-size: 16px; color: var(--suave); margin-top: auto; }
+/* cronograma */
+.gantt { display: grid; grid-template-columns: 220px repeat(12, 1fr); row-gap: 18px; align-items: center; font-size: 15px; }
+.gantt .mes { text-align: center; color: var(--suave); font-weight: 600; border-bottom: 1px solid var(--linea); padding-bottom: 6px; }
+.gantt .fila { grid-column: 1; font-weight: 600; font-size: 17px; }
+.barra { height: 40px; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; padding: 0 10px; white-space: nowrap; overflow: hidden; }
+.hito { grid-column: span 1; text-align: center; font-size: 22px; }
+/* flujo */
+.flujo { display: flex; align-items: stretch; gap: 14px; }
+.flujo .paso { flex: 1; background: var(--fondo); border: 1px solid var(--linea); border-radius: 16px; padding: 18px; position: relative; }
+.flujo .paso .n { width: 36px; height: 36px; border-radius: 50%; background: var(--azul); color: #fff; display: grid; place-items: center; font-weight: 700; margin-bottom: 10px; }
+.flujo .paso h3 { font-size: 21px; margin: 0 0 6px; }
+.flujo .paso p { font-size: 17px; color: var(--suave); line-height: 1.4; margin: 0; }
+.semana { display: flex; height: 70px; border-radius: 14px; overflow: hidden; font-weight: 700; color: #fff; font-size: 18px; margin: 10px 0 18px; }
+.semana div { display: flex; align-items: center; justify-content: center; }
+.check li { list-style: none; position: relative; padding-left: 30px; margin-bottom: 16px; font-size: 21px; color: var(--tinta); }
+.check li::before { content: '✓'; position: absolute; left: 0; color: var(--verde); font-weight: 800; }
+.check { padding: 0; margin: 0; }
+.pide { background: #eff6ff; border: 2px solid var(--azul); border-radius: 16px; padding: 22px 26px; }
+.pide h3 { margin: 0 0 10px; color: var(--azul); font-size: 22px; }
+.pide ol { margin: 0; padding-left: 1.3em; font-size: 19px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- 1. Portada -->
+<section class="slide portada">
+  <div class="etiqueta" style="color:#93c5fd">Testing Automation Center of Excellence</div>
+  <h1>Academia de Automatización de Pruebas</h1>
+  <div class="sub">Plan para formar ingenieros QA en automatización, de cero a experto, alineado con las metas del TCoE.</div>
+  <div class="quien">Presentación para managers y head accounts</div>
+</section>
+
+<!-- 2. Por qué ahora -->
+<section class="slide">
+  <div class="etiqueta">El reto</div>
+  <h2>Las metas del año 1 del TCoE dependen de las personas</h2>
+  <p class="grande">El charter del TCoE se compromete a metas de automatización y eficiencia que solo se alcanzan si los equipos tienen las habilidades para construir y mantener la automatización.</p>
+  <div class="cols c4" style="margin-top:18px">
+    <div class="tarjeta"><div class="cifra" style="color:var(--azul)">70 %</div><h3>Regresión automatizada</h3><p>Meta de cobertura de regresión del año 1.</p></div>
+    <div class="tarjeta"><div class="cifra" style="color:var(--morado)">80 %</div><h3>APIs automatizadas</h3><p>Meta de cobertura de API del año 1.</p></div>
+    <div class="tarjeta"><div class="cifra" style="color:var(--naranja)">−50 %</div><h3>Tiempo de regresión</h3><p>Reducción del tiempo de ejecución de la regresión.</p></div>
+    <div class="tarjeta"><div class="cifra" style="color:var(--verde)">80 %</div><h3>Ingenieros capacitados</h3><p>Y 50 % certificados en el framework, con 12 workshops internos.</p></div>
+  </div>
+  <p class="nota">Fuente: charter del TCoE, sección 9 (Success Metrics). La academia es la implementación de sus Training Services: learning paths, workshops, certificaciones y coaching.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>2</span></div>
+</section>
+
+<!-- 3. Qué es -->
+<section class="slide">
+  <div class="etiqueta">La propuesta</div>
+  <h2>Una ruta de 5 niveles, de cero a experto</h2>
+  <div class="cols c3">
+    <div class="tarjeta"><h3>Basada en nuestro framework</h3><p>Los niveles 0 a 4 salen del <b>QA Experience Assessment Framework</b>, con equivalencia directa a QA Jr, Mid, Sr y Lead.</p></div>
+    <div class="tarjeta"><h3>Un solo stack</h3><p><b>TypeScript + Playwright</b> para pruebas de UI y de API: moderno, gratuito y con una sola forma de trabajar entre equipos.</p></div>
+    <div class="tarjeta"><h3>Formato mixto</h3><p>Sesiones en vivo cortas, labs autoguiados que se validan solos y revisión de código como en un equipo real.</p></div>
+    <div class="tarjeta"><h3>Cada quien entra donde va</h3><p>Un <b>examen de ubicación</b> con las preguntas A–D del assessment decide el nivel de entrada. Nadie repite lo que ya sabe.</p></div>
+    <div class="tarjeta"><h3>Práctica real</h3><p>Una tienda de práctica propia dentro del repo: los labs no dependen de sitios externos y funcionan igual en cualquier máquina.</p></div>
+    <div class="tarjeta"><h3>Todo versionado</h3><p>Material, labs, soluciones y PDFs viven en el repositorio <b>test-academy</b>. Cada cambio se revisa como pull request.</p></div>
+  </div>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>3</span></div>
+</section>
+
+<!-- 4. Niveles -->
+<section class="slide">
+  <div class="etiqueta">La ruta</div>
+  <h2>Niveles, tiempos y rol al terminar</h2>
+  <div class="cols c5">
+    <div class="tarjeta nivel" style="--c:var(--verde)"><div class="num">Nivel 0</div><h3>Bases</h3><div class="dato"><b>80 h</b> guiadas</div><div class="dato">~14 semanas</div><div class="dato">Programación, Git y HTTP desde cero</div><div class="rol">Listo para automatizar</div></div>
+    <div class="tarjeta nivel" style="--c:var(--azul)"><div class="num">Nivel 1</div><h3>Beginner</h3><div class="dato"><b>90 h</b> guiadas</div><div class="dato">~15 semanas</div><div class="dato">Primeras pruebas de UI y API con Playwright</div><div class="rol">QA Jr</div></div>
+    <div class="tarjeta nivel" style="--c:var(--morado)"><div class="num">Nivel 2</div><h3>Intermediate</h3><div class="dato"><b>200 h</b> guiadas</div><div class="dato">~34 semanas</div><div class="dato">Framework propio, APIs, diseño de pruebas</div><div class="rol">QA Mid</div></div>
+    <div class="tarjeta nivel" style="--c:var(--naranja)"><div class="num">Nivel 3</div><h3>Advanced</h3><div class="dato"><b>150 h</b> + proyecto real</div><div class="dato">~25 semanas</div><div class="dato">CI/CD, escala, estrategia y métricas</div><div class="rol">QA Sr</div></div>
+    <div class="tarjeta nivel" style="--c:var(--rojo)"><div class="num">Nivel 4</div><h3>Expert</h3><div class="dato"><b>Mentoría</b></div><div class="dato">6 meses</div><div class="dato">Talleres de liderazgo y proyecto de impacto</div><div class="rol">Lead / Principal</div></div>
+  </div>
+  <p class="nota">Duraciones a 6 h por semana. Total de la ruta completa: 520 horas guiadas más 6 meses de mentoría. Cada nivel cierra con un proyecto y criterios de salida medibles.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>4</span></div>
+</section>
+
+<!-- 5. Formato semanal -->
+<section class="slide">
+  <div class="etiqueta">Cómo funciona</div>
+  <h2>6 horas por semana, sin sacar a nadie de su equipo</h2>
+  <div class="semana">
+    <div style="flex:1.5;background:var(--azul)">1.5 h sesión en vivo</div>
+    <div style="flex:4;background:var(--morado)">4 h lab autoguiado</div>
+    <div style="flex:.5;background:var(--verde);font-size:14px">0.5 h</div>
+  </div>
+  <div class="cols c3">
+    <div class="tarjeta"><h3>Sesión en vivo</h3><p>Concepto, demo y dudas. Se graba. Cada clase tiene un PDF de exposición con guion, errores comunes y respuestas para el ponente.</p></div>
+    <div class="tarjeta"><h3>Lab autoguiado</h3><p>Ejercicios del repo con pruebas que validan la solución: el alumno sabe al instante si lo resolvió.</p></div>
+    <div class="tarjeta"><h3>Revisión</h3><p>Cada lab se entrega como pull request y lo revisa el instructor o un compañero. Se practica el flujo real de trabajo desde el día uno.</p></div>
+  </div>
+  <p class="nota">Desde el Nivel 2 los labs se aplican al trabajo diario: lo que se aprende se usa en el producto del equipo.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>5</span></div>
+</section>
+
+<!-- 6. Ingreso -->
+<section class="slide">
+  <div class="etiqueta">Ingreso</div>
+  <h2>Del examen de ubicación al rol siguiente</h2>
+  <div class="flujo">
+    <div class="paso"><div class="n">1</div><h3>Examen de ubicación</h3><p>Preguntas A–D en automatización, API, Git y QE manual. Se aprueba un nivel con 2 de 3 respuestas "Competent".</p></div>
+    <div class="paso"><div class="n">2</div><h3>Nivel de entrada</h3><p>El resultado de automatización decide dónde empieza cada persona. Un QA con experiencia entra directo al Nivel 2 o 3.</p></div>
+    <div class="paso"><div class="n">3</div><h3>Cohorte</h3><p>Grupos de 8 a 12 personas por nivel, con un instructor. Las cohortes de distintos niveles corren en paralelo.</p></div>
+    <div class="paso"><div class="n">4</div><h3>Proyecto y salida</h3><p>Cada nivel cierra con un proyecto revisado y criterios de salida medibles. Se certifica el nivel.</p></div>
+    <div class="paso"><div class="n">5</div><h3>Siguiente nivel</h3><p>Los egresados de Nivel 3 y 4 se vuelven instructores, mentores y Quality Champions.</p></div>
+  </div>
+  <p class="nota" style="margin-top:28px">El mismo examen se puede aplicar cada año para medir la evolución de las capacidades del área.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>6</span></div>
+</section>
+
+<!-- 7. Cronograma -->
+<section class="slide">
+  <div class="etiqueta">Cronograma propuesto · Año 1</div>
+  <h2>Cohortes en paralelo según el nivel de entrada</h2>
+  <div class="gantt">
+    <div></div>
+    <div class="mes">M1</div><div class="mes">M2</div><div class="mes">M3</div><div class="mes">M4</div><div class="mes">M5</div><div class="mes">M6</div><div class="mes">M7</div><div class="mes">M8</div><div class="mes">M9</div><div class="mes">M10</div><div class="mes">M11</div><div class="mes">M12</div>
+    <div class="fila">Preparación</div><div class="barra" style="grid-column:2 / span 1;background:#64748b">Arranque</div>
+    <div class="fila">Nivel 0 · Bases</div><div class="barra" style="grid-column:3 / span 4;background:var(--verde)">Cohorte 1 · 14 semanas</div><div class="barra" style="grid-column:9 / span 4;background:var(--verde);opacity:.75">Cohorte 2</div>
+    <div class="fila">Nivel 1 · Beginner</div><div class="barra" style="grid-column:3 / span 4;background:var(--azul)">Cohorte 1 · 15 semanas</div><div class="barra" style="grid-column:7 / span 4;background:var(--azul);opacity:.75">Egresados de N0 y cohorte 2</div>
+    <div class="fila">Nivel 2 · Intermediate</div><div class="barra" style="grid-column:3 / span 8;background:var(--morado)">Cohorte 1 · 34 semanas (bloques 2A y 2B)</div><div class="barra" style="grid-column:11 / span 3;background:var(--morado);opacity:.75">Egresados de N1</div>
+    <div class="fila">Nivel 3 · Advanced</div><div class="barra" style="grid-column:3 / span 6;background:var(--naranja)">Cohorte 1 · 25 semanas + proyecto</div>
+    <div class="fila">Nivel 4 · Expert</div><div class="barra" style="grid-column:3 / span 6;background:var(--rojo)">Mentoría · 6 meses</div>
+  </div>
+  <p class="nota">Propuesta: el número de cohortes por nivel depende del resultado del examen de ubicación. Los meses se cuentan desde la aprobación del plan.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>7</span></div>
+</section>
+
+<!-- 8. Hitos -->
+<section class="slide">
+  <div class="etiqueta">Hitos</div>
+  <h2>Qué verán los stakeholders y cuándo</h2>
+  <table>
+    <tr><th style="width:110px">Mes</th><th>Hito</th><th style="width:380px">Evidencia</th></tr>
+    <tr><td><b>M1</b></td><td>Examen de ubicación aplicado a todo el equipo QA e instructores preparados</td><td>Mapa de capacidades por equipo y nivel</td></tr>
+    <tr><td><b>M2</b></td><td>Arrancan las cohortes de todos los niveles con participantes</td><td>Calendario y participantes confirmados</td></tr>
+    <tr><td><b>M5</b></td><td>Primeros egresados de Nivel 0 y Nivel 1 (QA Jr en automatización)</td><td>Proyectos finales aprobados</td></tr>
+    <tr><td><b>M7</b></td><td>Egresados de Nivel 3 y 4: primeros Quality Champions y mentores internos</td><td>Proyectos en sistemas reales con métricas antes y después</td></tr>
+    <tr><td><b>M10</b></td><td>Egresados de Nivel 2: frameworks de UI y API en los productos de sus equipos</td><td>Suites en CI de cada equipo participante</td></tr>
+    <tr><td><b>M12</b></td><td>Cierre del año 1 frente a las metas del TCoE</td><td>Reporte al Steering Committee</td></tr>
+  </table>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>8</span></div>
+</section>
+
+<!-- 9. Metas -->
+<section class="slide">
+  <div class="etiqueta">Metas</div>
+  <h2>Cómo medimos el éxito de la academia</h2>
+  <div class="cols c2">
+    <div>
+      <table>
+        <tr><th>Capacidad (metas del TCoE)</th><th style="width:150px">Año 1</th></tr>
+        <tr><td>Ingenieros capacitados</td><td><b>80 %</b></td></tr>
+        <tr><td>Ingenieros certificados en el framework</td><td><b>50 %</b></td></tr>
+        <tr><td>Workshops internos impartidos</td><td><b>12</b></td></tr>
+        <tr><td>Automation champions identificados</td><td><b>100 % de equipos</b></td></tr>
+      </table>
+    </div>
+    <div>
+      <table>
+        <tr><th>Indicadores propios de la academia</th><th style="width:150px">Meta</th></tr>
+        <tr><td>Participantes que terminan su nivel</td><td><b>≥ 80 %</b></td></tr>
+        <tr><td>Proyectos finales aprobados al primer intento</td><td><b>≥ 70 %</b></td></tr>
+        <tr><td>Satisfacción de participantes</td><td><b>≥ 4.5 / 5</b></td></tr>
+        <tr><td>Egresados de N3 y N4 que imparten o mentorean</td><td><b>≥ 50 %</b></td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="nota">Los indicadores propios son una propuesta inicial; se ajustan con los datos de la primera cohorte. Las metas de automatización y eficiencia del TCoE (cobertura, tiempo de regresión, defectos escapados) se reportan por equipo a medida que los egresados aplican lo aprendido.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>9</span></div>
+</section>
+
+<!-- 10. Ventajas -->
+<section class="slide">
+  <div class="etiqueta">Ventajas</div>
+  <h2>Por qué implementar la academia</h2>
+  <div class="cols c3">
+    <div class="tarjeta"><h3>Entregas más rápidas</h3><p>Regresiones automatizadas que corren en cada PR. El objetivo del TCoE es reducir 50 % el tiempo de regresión y 40 % el esfuerzo manual.</p></div>
+    <div class="tarjeta"><h3>Menos defectos en producción</h3><p>Pruebas de API, contratos y quality gates detectan errores antes del release. Meta del TCoE: −25 % de fuga de defectos.</p></div>
+    <div class="tarjeta"><h3>Talento interno</h3><p>Formar cuesta menos y tarda menos que contratar perfiles senior de automatización, y la gente ya conoce el producto.</p></div>
+    <div class="tarjeta"><h3>Plan de carrera claro</h3><p>Niveles con equivalencia Jr, Mid, Sr y Lead y criterios de salida objetivos. Mejora la retención y facilita las evaluaciones.</p></div>
+    <div class="tarjeta"><h3>Una sola forma de trabajar</h3><p>Mismo stack, mismos patrones y mismos estándares entre equipos: las personas y los activos se mueven de un proyecto a otro.</p></div>
+    <div class="tarjeta"><h3>Roles del TCoE cubiertos</h3><p>Los Niveles 3 y 4 forman a los Automation Consultants y Quality Champions que el charter tiene pendientes.</p></div>
+  </div>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>10</span></div>
+</section>
+
+<!-- 11. Qué ya está listo -->
+<section class="slide">
+  <div class="etiqueta">Estado actual</div>
+  <h2>El material está listo para arrancar</h2>
+  <div class="cols c2" style="align-items:start">
+    <ul class="check">
+      <li>Matriz de competencias y examen de ubicación</li>
+      <li>Temario de los 5 niveles con horas y criterios de salida</li>
+      <li>53 clases con guía, lab y PDF de exposición para el ponente</li>
+      <li>Labs con soluciones verificadas automáticamente en cada cambio</li>
+      <li>Tienda de práctica propia con UI y API REST</li>
+      <li>Plantillas de entregables para estrategia, CI, RCA y los 6 talleres del Nivel 4</li>
+    </ul>
+    <div class="cols c2">
+      <div class="tarjeta"><div class="cifra" style="color:var(--azul)">53</div><p>clases listas para impartir</p></div>
+      <div class="tarjeta"><div class="cifra" style="color:var(--morado)">520 h</div><p>de ruta guiada</p></div>
+      <div class="tarjeta"><div class="cifra" style="color:var(--verde)">200+</div><p>pruebas que validan los labs</p></div>
+      <div class="tarjeta"><div class="cifra" style="color:var(--naranja)">6</div><p>talleres de liderazgo</p></div>
+    </div>
+  </div>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>11</span></div>
+</section>
+
+<!-- 12. Qué se necesita -->
+<section class="slide">
+  <div class="etiqueta">Inversión</div>
+  <h2>Qué necesitamos para arrancar</h2>
+  <div class="cols c2">
+    <div>
+      <table>
+        <tr><th>Recurso</th><th>Dedicación estimada</th></tr>
+        <tr><td><b>Participantes</b></td><td>6 h por semana protegidas en su agenda</td></tr>
+        <tr><td><b>Instructor por cohorte</b></td><td>~4 h por semana: sesión, preparación y revisión de PRs</td></tr>
+        <tr><td><b>Mentores del Nivel 4</b></td><td>45 min cada 2 semanas por participante</td></tr>
+        <tr><td><b>Herramientas</b></td><td>Node.js, VS Code, Playwright y GitHub: sin costo de licencias</td></tr>
+        <tr><td><b>Sponsor</b></td><td>Un manager por área que proteja el tiempo y revise avances</td></tr>
+      </table>
+    </div>
+    <div class="pide">
+      <h3>Decisiones que pedimos hoy</h3>
+      <ol>
+        <li>Aprobar el plan y el arranque del examen de ubicación.</li>
+        <li>Proteger 6 h semanales para los participantes.</li>
+        <li>Nombrar instructores para las primeras cohortes.</li>
+        <li>Nombrar un sponsor por área.</li>
+      </ol>
+    </div>
+  </div>
+  <p class="nota">Las dedicaciones son estimaciones para cohortes de 8 a 12 personas; se ajustan con la primera cohorte.</p>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>12</span></div>
+</section>
+
+<!-- 13. Gobierno -->
+<section class="slide">
+  <div class="etiqueta">Gobierno y seguimiento</div>
+  <h2>Visibilidad continua del avance</h2>
+  <div class="cols c3">
+    <div class="tarjeta"><h3>Mensual</h3><p><b>Automation Governance Board:</b> avance de cohortes, asistencia, labs entregados y riesgos.</p></div>
+    <div class="tarjeta"><h3>Trimestral</h3><p><b>QE Steering Committee:</b> egresados por nivel, metas de capacidad e impacto en las métricas de los equipos.</p></div>
+    <div class="tarjeta"><h3>Anual</h3><p><b>Strategic Review:</b> nuevo examen de ubicación para medir la evolución y ajustar el plan del año 2.</p></div>
+  </div>
+  <div class="pie"><span>Academia de Automatización de Pruebas</span><span>13</span></div>
+</section>
+
+<!-- 14. Próximos pasos -->
+<section class="slide portada">
+  <div class="etiqueta" style="color:#93c5fd">Próximos pasos</div>
+  <h1 style="font-size:60px">Aprobación, examen de ubicación y primeras cohortes</h1>
+  <div class="sub">Semana 1: aprobación y sponsors · Semanas 2 a 4: examen de ubicación e instructores · Mes 2: arranque de cohortes.</div>
+  <div class="quien">Academia de Automatización de Pruebas · TCoE</div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+/* Estilos del material de exposición (scripts/generar-pdfs.mjs). Diapositivas de 1280 × 720. */
+@page { size: 1280px 720px; margin: 0; }
+@page notas { size: 1280px 720px; margin: 56px 88px 64px; }
+
+:root {
+  --tinta: #0f172a;
+  --suave: #475569;
+  --linea: #e2e8f0;
+  --fondo-codigo: #0f172a;
+  --texto-codigo: #e2e8f0;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body {
+  font-family: Inter, 'Liberation Sans', Arial, sans-serif;
+  color: var(--tinta);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+code, pre { font-family: 'JetBrains Mono', 'DejaVu Sans Mono', monospace; }
+
+/* ---------- diapositivas ---------- */
+.slide {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  overflow: hidden;
+  break-after: page;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 72px 56px;
+  border-top: 10px solid var(--acento);
+}
+.slide header { margin-bottom: 20px; }
+.etiqueta {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--acento);
+  margin-bottom: 6px;
+}
+.slide h2 { font-size: 38px; line-height: 1.15; margin: 0; font-weight: 700; }
+.contenido { flex: 1; min-height: 0; overflow: hidden; font-size: 23px; line-height: 1.45; }
+.contenido > :first-child { margin-top: 0; }
+.contenido p { margin: 0 0 14px; }
+.contenido ul, .contenido ol { margin: 0 0 14px; padding-left: 1.2em; }
+.contenido li { margin-bottom: 8px; }
+.contenido li::marker { color: var(--acento); font-weight: 700; }
+.contenido strong { color: var(--tinta); }
+.contenido h3 { font-size: 1.1em; margin: 0 0 10px; color: var(--acento); }
+.contenido :not(pre) > code { background: #f1f5f9; border-radius: 5px; padding: 1px 6px; font-size: 0.88em; }
+.contenido pre {
+  background: var(--fondo-codigo);
+  color: var(--texto-codigo);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin: 0 0 16px;
+  font-size: 0.74em;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.contenido table { border-collapse: collapse; width: 100%; font-size: 0.82em; margin-bottom: 16px; }
+.contenido th { text-align: left; background: color-mix(in srgb, var(--acento) 12%, white); color: var(--tinta); }
+.contenido th, .contenido td { padding: 9px 12px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+.contenido blockquote { margin: 0 0 14px; padding: 10px 18px; border-left: 5px solid var(--acento); background: #f8fafc; }
+.contenido a { color: var(--acento); text-decoration: none; }
+.slide footer {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--suave);
+}
+
+/* portada y cierre */
+.portada, .cierre {
+  justify-content: center;
+  background: linear-gradient(135deg, var(--acento), color-mix(in srgb, var(--acento) 55%, #0f172a));
+  color: #fff;
+  border-top: 0;
+}
+.portada-nivel { font-size: 22px; font-weight: 600; opacity: 0.85; letter-spacing: 0.04em; }
+.portada-codigo { font-size: 30px; font-weight: 700; margin-top: 28px; opacity: 0.9; }
+.portada h1 { font-family: 'Inter Display', Inter, sans-serif; font-size: 72px; line-height: 1.05; margin: 8px 0 24px; max-width: 1000px; }
+.portada-horas { font-size: 24px; opacity: 0.9; }
+.portada-pie { position: absolute; bottom: 44px; left: 72px; font-size: 18px; opacity: 0.75; }
+.cierre h1 { font-size: 80px; margin: 0 0 16px; }
+.cierre p { font-size: 24px; opacity: 0.9; }
+.cierre code { background: rgba(255, 255, 255, 0.15); padding: 2px 10px; border-radius: 6px; }
+
+/* objetivo */
+.objetivo .frase { font-size: 1.4em; line-height: 1.4; max-width: 1050px; }
+.objetivo .frase strong { color: var(--acento); }
+
+/* agenda */
+.agenda { list-style: none; padding: 0; margin: 0; counter-reset: bloque; }
+.agenda li {
+  display: grid;
+  grid-template-columns: 56px 130px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--linea);
+  counter-increment: bloque;
+}
+.agenda li::before {
+  content: counter(bloque);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--acento);
+  color: #fff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+.agenda .minutos { font-weight: 700; color: var(--acento); }
+
+/* práctica y preguntas */
+.practica { background: #f8fafc; }
+.preguntas .contenido ol { font-size: 1.05em; }
+.preguntas .contenido li { margin-bottom: 16px; }
+.columnas { columns: 2; column-gap: 48px; }
+
+/* ---------- notas del ponente (páginas de texto corrido) ---------- */
+.notas { page: notas; font-size: 17px; line-height: 1.55; color: var(--tinta); }
+.notas-titulo { border-bottom: 4px solid var(--acento); padding-bottom: 14px; margin-bottom: 20px; }
+.notas-titulo h1 { font-size: 34px; margin: 0; }
+.notas-titulo p { margin: 4px 0 0; color: var(--suave); }
+.notas h2 { font-size: 24px; color: var(--acento); margin: 26px 0 10px; break-after: avoid; }
+.notas h3 { font-size: 19px; margin: 18px 0 6px; break-after: avoid; }
+.notas p { margin: 0 0 10px; }
+.notas ul, .notas ol { margin: 0 0 12px; padding-left: 1.3em; }
+.notas li { margin-bottom: 5px; }
+.notas table { border-collapse: collapse; width: 100%; margin: 0 0 14px; font-size: 15px; break-inside: avoid; }
+.notas th, .notas td { border: 1px solid var(--linea); padding: 6px 10px; text-align: left; vertical-align: top; }
+.notas th { background: #f1f5f9; }
+.notas pre { background: #f8fafc; border: 1px solid var(--linea); border-radius: 8px; padding: 12px 16px; font-size: 13px; white-space: pre-wrap; }
+.notas :not(pre) > code { background: #f1f5f9; border-radius: 4px; padding: 1px 5px; font-size: 0.9em; }
