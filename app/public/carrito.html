@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Carrito</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Carrito</h1>
+  <p id="vacio" hidden>Tu carrito está vacío</p>
+  <table aria-label="Productos en el carrito">
+    <thead><tr><th>Producto</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p>Total: <strong data-testid="total">$0 MXN</strong></p>
+  <a href="/checkout.html" id="finalizar">Finalizar compra</a>
+</main>
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  encabezado();
+  function pintar() {
+    const items = Tienda.carrito();
+    const cuerpo = document.querySelector('tbody');
+    cuerpo.innerHTML = '';
+    for (const i of items) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${i.nombre}</td><td>${i.cantidad}</td><td>${Tienda.precio(i.precio * i.cantidad)}</td>
+        <td><button type="button" class="secundario">Quitar</button></td>`;
+      tr.querySelector('button').addEventListener('click', () => { Tienda.quitar(i.id); pintar(); });
+      cuerpo.append(tr);
+    }
+    document.querySelector('[data-testid="total"]').textContent = Tienda.precio(Tienda.total());
+    document.getElementById('vacio').hidden = items.length > 0;
+    document.getElementById('finalizar').hidden = items.length === 0;
+  }
+  pintar();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "test-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Academia de automatización de pruebas con TypeScript y Playwright",
+  "type": "module",
+  "scripts": {
+    "app": "node app/server.mjs",
+    "test": "playwright test",
+    "test:nivel0": "playwright test --project=nivel-0",
+    "test:nivel1": "playwright test --project=nivel-1",
+    "reporte": "playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "verificar-soluciones": "node scripts/verificar-soluciones.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.7.0"
+  }
+}

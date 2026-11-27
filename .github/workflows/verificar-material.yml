@@ -1,0 +1,25 @@
+# Verifica que el material de la academia sigue funcionando:
+# que el código compila y que todas las soluciones de referencia pasan sus pruebas.
+name: Verificar material
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run typecheck
+      - run: npm run verificar-soluciones
+        env:
+          CI: 'true'

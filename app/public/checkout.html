@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Tienda QA | Finalizar compra</title><link rel="stylesheet" href="/estilos.css"></head>
+<body>
+<main>
+  <h1>Finalizar compra</h1>
+  <form id="checkout" novalidate>
+    <label>Nombre <input name="nombre"></label>
+    <label>Apellido <input name="apellido"></label>
+    <label>Código postal <input name="cp" inputmode="numeric"></label>
+    <button type="submit">Confirmar pedido</button>
+    <p role="alert" class="mensaje-error" id="error"></p>
+  </form>
+  <section id="confirmacion" hidden>
+    <h2>¡Gracias por tu compra!</h2>
+    <p>Número de pedido: <span data-testid="numero-pedido"></span></p>
+  </section>
+</main>
+<script src="/app.js"></script>
+<script>
+  Tienda.exigirSesion();
+  encabezado();
+  document.getElementById('checkout').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const error = document.getElementById('error');
+    if (!f.nombre.value.trim()) { error.textContent = 'El nombre es obligatorio'; return; }
+    if (!f.apellido.value.trim()) { error.textContent = 'El apellido es obligatorio'; return; }
+    if (!/^\d{5}$/.test(f.cp.value)) { error.textContent = 'El código postal debe tener 5 dígitos'; return; }
+    error.textContent = '';
+    f.hidden = true;
+    document.querySelector('[data-testid="numero-pedido"]').textContent = 'QA-' + String(Date.now()).slice(-6);
+    document.getElementById('confirmacion').hidden = false;
+    Tienda.guardarCarrito([]);
+  });
+</script>
+</body>
+</html>

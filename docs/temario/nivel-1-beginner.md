@@ -22,10 +22,10 @@
 
 ## Proyecto final
 
-**"Suite de humo":** 10 pruebas de UI y 5 de API sobre una app de práctica (por ejemplo
-`saucedemo.com` y `restful-booker`): login, búsqueda, agregar al carrito, checkout y
-validaciones de API. Requisitos: sin `waitForTimeout`, locators de usuario, pasa en
-Chromium y Firefox, reporte HTML adjunto al PR.
+**"Suite de humo":** 10 pruebas de UI y 5 de API sobre la tienda de práctica del repo:
+login, búsqueda, agregar al carrito, checkout y validaciones de API. Requisitos: sin
+`waitForTimeout`, locators de usuario, pasa 5 veces seguidas, reporte HTML adjunto al PR.
+Detalle en [niveles/nivel-1](../../niveles/nivel-1/README.md#proyecto-final-suite-de-humo).
 
 ## Criterios de salida
 
