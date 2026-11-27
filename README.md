@@ -19,10 +19,11 @@ Ruta de aprendizaje para ingenieros QA que quieren crecer en automatización, de
 
 - [Matriz de competencias por nivel](docs/00-matriz-competencias.md)
 - [Examen de ubicación](docs/01-examen-ubicacion.md)
+- [Temario por nivel](docs/temario/README.md)
 
 ## Estado
 
 1. ✅ Matriz de competencias y examen de ubicación
-2. ⏳ Temario detallado por nivel
+2. ✅ Temario detallado por nivel
 3. ⏳ Material piloto de Nivel 0 y Nivel 1
 4. ⏳ Material de Niveles 2 a 4
